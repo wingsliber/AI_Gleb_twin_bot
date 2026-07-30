@@ -24,9 +24,9 @@ IMAGE_PATH_OGO = BASE_DIR / "ogo.jpg"
 IMAGE_PATH_ORU = BASE_DIR / "oru.jpg"
 
 if not IMAGE_PATH_OGO.exists():
-    logger.warning(f"⚠️ Файл картинки не найден: {IMAGE_PATH}")
+    logger.warning(f"⚠️ Файл картинки не найден: {IMAGE_PATH_OGO}")
 else:
-    logger.info(f"✅ Картинка найдена: {IMAGE_PATH}")
+    logger.info(f"✅ Картинка найдена: {IMAGE_PATH_OGO}")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
