@@ -20,9 +20,10 @@ if not BOT_TOKEN:
     sys.exit(1)
 
 BASE_DIR = Path(__file__).resolve().parent
-IMAGE_PATH = BASE_DIR / "ogo.jpg"
+IMAGE_PATH_OGO = BASE_DIR / "ogo.jpg"
+IMAGE_PATH_ORU = BASE_DIR / "oru.jpg"
 
-if not IMAGE_PATH.exists():
+if not IMAGE_PATH_OGO.exists():
     logger.warning(f"⚠️ Файл картинки не найден: {IMAGE_PATH}")
 else:
     logger.info(f"✅ Картинка найдена: {IMAGE_PATH}")
@@ -43,16 +44,26 @@ async def handle_ogo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = msg.text.lower()
     
     # Проверяем слово "ого" как отдельное слово
-    if re.search(r'\bого\b', text, re.IGNORECASE):
+    if re.search(r'\bого+\b', text, re.IGNORECASE):
         logger.info(f"🎯 Найдено слово 'ого' в чате {msg.chat.id}. Отправляю картинку...")
         try:
-            with open(IMAGE_PATH, 'rb') as photo:
+            with open(IMAGE_PATH_OGO, 'rb') as photo:
                 await msg.reply_photo(photo=photo)
             logger.info("✅ Картинка успешно отправлена")
         except Exception as e:
             logger.error(f"❌ Ошибка при отправке картинки: {e}")
             await msg.reply_text(f"Ошибка при отправке: {e}")
 
+    # Проверяем слово "ору" как отдельное слово
+    if re.search(r'\bору+\b', text, re.IGNORECASE):
+        logger.info(f"🎯 Найдено слово 'ору' в чате {msg.chat.id}. Отправляю картинку...")
+        try:
+            with open(IMAGE_PATH_ORU, 'rb') as photo:
+                await msg.reply_photo(photo=photo)
+            logger.info("✅ Картинка успешно отправлена")
+        except Exception as e:
+            logger.error(f"❌ Ошибка при отправке картинки: {e}")
+            await msg.reply_text(f"Ошибка при отправке: {e}")
 
 async def debug_catch_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Временный отладчик: ловит ВСЕ нестандартные события, чтобы мы видели, что шлет Telegram"""
@@ -64,10 +75,10 @@ def main():
     
     request = HTTPXRequest(
         connection_pool_size=8,
-        connect_timeout=30.0,
-        read_timeout=30.0,
-        write_timeout=30.0,  # Увеличенный таймаут для загрузки картинок
-        pool_timeout=30.0
+        connect_timeout=5.0,
+        read_timeout=5.0,
+        write_timeout=15.0,  # Увеличенный таймаут для загрузки картинок
+        pool_timeout=5.0
     )
     
     application = Application.builder().token(BOT_TOKEN).request(request).build()
