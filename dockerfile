@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Копирование кода и картинки
 COPY bot.py .
-COPY ogo.jpg .
+COPY *.jpg .
 
 # Запуск бота
 CMD ["python", "bot.py"]

@@ -22,6 +22,7 @@ if not BOT_TOKEN:
 BASE_DIR = Path(__file__).resolve().parent
 IMAGE_PATH_OGO = BASE_DIR / "ogo.jpg"
 IMAGE_PATH_ORU = BASE_DIR / "oru.jpg"
+IMAGE_PATH_GLEB = BASE_DIR / "gleb.jpg"
 
 if not IMAGE_PATH_OGO.exists():
     logger.warning(f"⚠️ Файл картинки не найден: {IMAGE_PATH_OGO}")
@@ -60,6 +61,20 @@ async def handle_ogo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             with open(IMAGE_PATH_ORU, 'rb') as photo:
                 await msg.reply_photo(photo=photo)
+            logger.info("✅ Картинка успешно отправлена")
+        except Exception as e:
+            logger.error(f"❌ Ошибка при отправке картинки: {e}")
+            await msg.reply_text(f"Ошибка при отправке: {e}")
+
+    # Проверяем слово "Глеб" как отдельное слово
+    if re.search(r'\bГлеб+\b', text, re.IGNORECASE):
+        logger.info(f"🎯 Найдено слово 'Глеб' в чате {msg.chat.id}. Отправляю картинку...")
+        try:
+            with open(IMAGE_PATH_GLEB, 'rb') as photo:
+                await msg.reply_photo(
+                    photo=photo,
+                    caption="хлеб"
+                    )
             logger.info("✅ Картинка успешно отправлена")
         except Exception as e:
             logger.error(f"❌ Ошибка при отправке картинки: {e}")
