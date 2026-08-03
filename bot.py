@@ -60,7 +60,7 @@ async def handle_ogo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.info(f"🎯 Найдено слово 'ору' в чате {msg.chat.id}. Отправляю картинку...")
         try:
             with open(IMAGE_PATH_ORU, 'rb') as photo:
-                await msg.reply_photo(photo=photo)
+                await msg.reply_photo(photo=photo, caption="орёшь и без меня?")
             logger.info("✅ Картинка успешно отправлена")
         except Exception as e:
             logger.error(f"❌ Ошибка при отправке картинки: {e}")
@@ -90,10 +90,10 @@ def main():
     
     request = HTTPXRequest(
         connection_pool_size=8,
-        connect_timeout=5.0,
-        read_timeout=5.0,
-        write_timeout=15.0,  # Увеличенный таймаут для загрузки картинок
-        pool_timeout=5.0
+        connect_timeout=10.0,
+        read_timeout=10.0,
+        write_timeout=20.0,  # Увеличенный таймаут для загрузки картинок
+        pool_timeout=10.0
     )
     
     application = Application.builder().token(BOT_TOKEN).request(request).build()
